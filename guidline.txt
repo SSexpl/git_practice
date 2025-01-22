@@ -1,1 +1,3 @@
 guidline for contribution 
+
+Only authorized people can contribute
