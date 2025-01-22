@@ -11,4 +11,4 @@ result = num1  * num2
 print(f"The mul of {num1} and {num2} is {result}")
 
 
-#updated mul file 
+#updated mul file all allowed
