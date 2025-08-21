@@ -1,0 +1,30 @@
+name: Project automation
+
+on:
+  project_item:
+    types: [created, updated]
+
+jobs:
+  move_on_pr_or_commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move issue to Todo when PR linked
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { github, context } = require('@actions/github');
+            if (context.payload.project_item.content_type === "Issue" &&
+                context.payload.action === "linked_pull_request") {
+              await github.graphql(`
+                mutation {
+                  updateProjectV2ItemFieldValue(
+                    input: {
+                      projectId: "YOUR_PROJECT_ID"
+                      itemId: "${context.payload.project_item.id}"
+                      fieldId: "STATUS_FIELD_ID"
+                      value: { singleSelectOptionId: "TODO_OPTION_ID" }
+                    }
+                  ) { clientMutationId }
+                }
+              `);
+            }
